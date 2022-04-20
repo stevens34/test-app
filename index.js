@@ -18,7 +18,7 @@ app.post('/', (req, res) => {
     const XLSX = require('xlsx');
     const sourceFile = XLSX.readFile(join(__dirname, 'Allergen_Information.xlsx'));
     const sourceData = XLSX.utils.sheet_to_json(sourceFile.Sheets['Property Values']);
-    const newWS = XLSX.utils.aoa_to_sheet(masterArr);
+    const newWS = XLSX.utils.aoa_to_sheet();
     const newwb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(newwb, newWS, "Master Sheet");
     XLSX.writeFile(newwb, "NewItemType.xlsx");
