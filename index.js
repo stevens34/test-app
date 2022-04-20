@@ -17,6 +17,8 @@ app.post('/', (req, res) => {
     var wb = new xl.Workbook();
 
     var ws = wb.addWorksheet('Sheet 1');
+    wb.addWorksheet('Sheet 2');
+    wb.addWorksheet('Sheet 3');
     wb.write('Excel.xlsx');
 
     console.log(ws);
