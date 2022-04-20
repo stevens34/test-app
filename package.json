@@ -13,7 +13,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "excel4node": "^1.7.2",
     "express": "^4.17.3",
-    "memfs": "^3.4.1"
+    "ftp": "^0.3.10",
+    "memfs": "^3.4.1",
+    "xlsx": "^0.18.5"
   }
 }
