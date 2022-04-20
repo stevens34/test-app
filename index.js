@@ -12,6 +12,7 @@ app.get('/', (req, res) => {        //get requests to the root ("/") will route 
 
 app.post('/', (req, res) => {
     console.log("hello!!!!");
+    console.log(__dirname);
 
     const Ftp = require('ftp');
     const XLSX = require('xlsx');
