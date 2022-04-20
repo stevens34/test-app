@@ -1,8 +1,7 @@
 const express = require('express');
 const app = express();
 const port = 5000;
-const memfs = require('memfs');
-const fs = require('fs')
+const {join} = require('path');
 const xl = require('excel4node');
 
 //Idiomatic expression in express to route and respond to a client request
