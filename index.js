@@ -14,94 +14,43 @@ app.get('/', (req, res) => {        //get requests to the root ("/") will route 
 app.post('/', (req, res) => {
     console.log("hello!!!!");
 
-    const orgId = "s-2fffc3fc-fb93-4daf-9ef1-fa4f0d61462d";
-
-    const url = `https://app.salsify.com/api/orgs/${orgId}/imports`;
-
-    const config = {
-        headers: { Authorization: `Bearer _WJ3GJ57CXFXSJjV-5OTU8VcOeRC6NnzLJ__5jO7cyM` }
-    };
-
-    const gctSandboxBody = {
-        "import": {
-            "name": "Test Excel Import",
-            "import_source": {
-                "type": "ftp_import_source",
-                "file": "/Public/cambridgeTesting.xlsx",
-                "host": "ftp.salsify.com",
-                "port": "21",
-                "username": "gournay_consulting",
-                "password": "sKdAN9RDk9SD",
-                "protocol": "ftp"
-            },
-            "import_format": {
-                "type": "product_import_format",
-                "import_mode": "changeset",
-                "property_value_mode": "replace",
-                "column_mappings": {
-                    "GTIN": {
-                        "target_attribute": "GTIN",
-                        "role": "product_id",
-                        "data_type": "string",
-                        "auto_create_enumerated_values": false,
-                        "quantity_separator": ":"
-                    },
-                    "productFlavor": {
-                        "target_attribute": "productFlavor",
-                        "data_type": "string",
-                        "auto_create_enumerated_values": false,
-                        "quantity_separator": ":"
-                    },
-                    "brandId": {
-                        "target_attribute": "brandId",
-                        "data_type": "string",
-                        "auto_create_enumerated_values": false,
-                        "quantity_separator": ":"
-                    },
-                    "productSize": {
-                        "target_attribute": "productSize",
-                        "data_type": "string",
-                        "auto_create_enumerated_values": false,
-                        "quantity_separator": ":"
-                    },
-                    "productSizeUOM": {
-                        "target_attribute": "productSizeUOM",
-                        "data_type": "string",
-                        "auto_create_enumerated_values": false,
-                        "quantity_separator": ":"
-                    },
-                    "imageURL": {
-                        "target_attribute": "imageURL",
-                        "data_type": "digital_asset",
-                        "auto_create_enumerated_values": false,
-                        "quantity_separator": ":"
-                    }
-                }
-            }
-        }
-    };
+    const Ftp = require('ftp');
+    const XLSX = require('xlsx');
+    const sourceFile = XLSX.readFile(join(__dirname, 'Allergen_Information.xlsx'));
+    const sourceData = XLSX.utils.sheet_to_json(sourceFile.Sheets['Property Values']);
+    const newWS = XLSX.utils.aoa_to_sheet(masterArr);
+    const newwb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(newwb, newWS, "Master Sheet");
+    XLSX.writeFile(newwb, "NewItemType.xlsx");
+    const ftpClient = new Ftp();
+    ftpClient.on('ready', function () {
+        ftpClient.put('./CopiedProduct123.pdf', '/OCR_Automation/CopiedProduct123.pdf', function (err, list) {
+            if (err) throw err;
+            ftpClient.end();
+        });
+    });
+    ftpClient.connect({
+        'host': 'ftp.salsify.com',
+        'user': 'gournay_consulting',
+        'password': "sKdAN9RDk9SD",
+    });
 
     try {
-        const responseReadyImport = await Axios.post(url, gctSandboxBody, config);
+        let wb = new xl.Workbook;
+        var ws = wb.addWorksheet('Sheet 1');
 
-        console.log(responseReadyImport.data.id);
-
-        const startImportURL = `https://app.salsify.com/api/orgs/${orgId}/imports/${responseReadyImport.data.id}/runs`;
-
-        const responseStartImport = await Axios.post(startImportURL, {}, config);
-
-        console.log(responseStartImport);
-
-        return res.status(200).send({
-            status: 'success2',
-            data: responseReadyImport.data.id
+        res.status(200).send({
+            status: "success",
+            data: "test"
         });
     } catch (error) {
-        return res.status(418).send({
-            status: 'error',
+        res.status(418).send({
+            status: "Error",
             data: error.message
         });
     }
+
+    return;
 })
 
 // const router = require('express').Router();
