@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const port = 5000;
 const memfs = require('memfs');
+const fs = require('fs')
 
 //Idiomatic expression in express to route and respond to a client request
 app.get('/', (req, res) => {        //get requests to the root ("/") will route here
@@ -18,7 +19,9 @@ app.listen(process.env.PORT || port, (error) => {
         test3: 'test3'
     }
 
-    memfs.vol.fromJSON(json,'/app');
+    console.log(json);
+
+    const test = memfs.vol.fromJSON(json,'/app');
 
     if (error) {
         console.log(error);
