@@ -12,6 +12,10 @@ app.get('/', (req, res) => {        //get requests to the root ("/") will route 
 
 app.post('/', (req,res)=>{
     console.log("hello!!!!");
+    res.status(200).send({
+        status: "success",
+        data: "test"
+    });
 })
 
 // const router = require('express').Router();
