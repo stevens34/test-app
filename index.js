@@ -34,7 +34,7 @@ app.post('/', (req, res) => {
     XLSX.writeFile(newwb, "NewItemType.xlsx");
     const ftpClient = new Ftp();
     ftpClient.on('ready', function () {
-        ftpClient.put(ws, '/OCR_Automation/CopiedProduct123.csv', function (err, list) {
+        ftpClient.put(wb, '/OCR_Automation/CopiedProduct123.csv', function (err, list) {
             if (err) throw err;
             ftpClient.end();
         });
