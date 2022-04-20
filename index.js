@@ -14,6 +14,13 @@ app.post('/', (req, res) => {
     console.log("hello!!!!");
     console.log(__dirname);
 
+    var wb = new xl.Workbook();
+
+    var ws = wb.addWorksheet('Sheet 1');
+    wb.writeFile('Excel.xlsx');
+
+    console.log(ws);
+
     const Ftp = require('ftp');
     const XLSX = require('xlsx');
     const sourceFile = XLSX.readFile(join(__dirname, 'Allergen_Information.xlsx'));
