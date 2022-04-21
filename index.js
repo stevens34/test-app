@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const port = 5000;
-const {join} = require('path');
+const { join } = require('path');
 const xl = require('excel4node');
 
 //Idiomatic expression in express to route and respond to a client request
@@ -17,8 +17,8 @@ app.post('/', (req, res) => {
     var wb = new xl.Workbook();
 
     var ws = wb.addWorksheet('Sheet 1');
-    ws.cell(1,1).number(100);
-    ws.cell(2,2).number(200);
+    ws.cell(1, 1).number(100);
+    ws.cell(2, 2).number(200);
 
     wb.write('Excel.xlsx');
 
@@ -33,16 +33,18 @@ app.post('/', (req, res) => {
     XLSX.utils.book_append_sheet(newwb, newWS, "Master Sheet");
     XLSX.writeFile(newwb, "NewItemType.xlsx");
     const ftpClient = new Ftp();
-    ftpClient.on('ready', function () {
-        ftpClient.put(wb, '/OCR_Automation/CopiedProduct123.csv', function (err, list) {
-            if (err) throw err;
-            ftpClient.end();
-        });
-    });
+    // ftpClient.on('ready', function () {
+    //     ftpClient.put(wb, '/OCR_Automation/CopiedProduct123.csv', function (err, list) {
+    //         if (err) throw err;
+    //         ftpClient.end();
+    //     });
+    // });
     ftpClient.connect({
         'host': 'ftp.salsify.com',
         'user': 'gournay_consulting',
         'password': "sKdAN9RDk9SD",
+    }).then(() => {
+        ftpClient.upload("test.xlsx", ws);
     });
 
     try {
